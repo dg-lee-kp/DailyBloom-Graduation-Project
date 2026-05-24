@@ -1,0 +1,13 @@
+# Local IDE/project files
+.idea/
+.gradle/
+.kotlin/
+local.properties
+
+# Build outputs
+build/
+*/build/
+
+# OS files
+Thumbs.db
+.DS_Store

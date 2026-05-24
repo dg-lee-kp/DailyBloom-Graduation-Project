@@ -1,0 +1,59 @@
+name: dailybloom
+
+volumes:
+  postgres_data:
+
+services:
+  database:
+    build:
+      context: ./database
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/
+    networks:
+      - db-conn
+
+  llm:
+    build:
+      context: ./llm
+    environment:
+      OLLAMA_KEEP_ALIVE: -1
+      OLLAMA_MAX_LOADED_MODELS: 1
+    ports:
+      - 11434:11434
+    volumes:
+      - ./llm_storage:/root/.ollama
+    networks:
+      - ai-conn
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  gateway:
+    build:
+      context: ./gateway
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      OLLAMA_HOST: llm
+      OLLAMA_DEFAULT_PORT: 11434
+    ports:
+      - 8080:8080
+    networks:
+      - db-conn
+      - ai-conn
+
+networks:
+  db-conn:
+  ai-conn:

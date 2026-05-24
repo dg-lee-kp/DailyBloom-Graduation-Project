@@ -1,0 +1,16 @@
+/backend/llm_storage
+/figma_example
+/backend/.env
+.DS_Store
+.kotlin/
+__pycache__/
+*.pyc
+build/
+*/build/
+.gradle/
+local.properties
+.idea/
+*.iml
+*.jks
+*.keystore
+keystore.properties
