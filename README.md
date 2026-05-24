@@ -69,6 +69,7 @@ source/app/build/outputs/apk/debug/app-debug.apk
 - PostgreSQL 데이터베이스 설정
 - Docker Compose 설정
 - API 문서
+- 환경 변수 예시 파일: `source/backend/.env.example`
 
 ## 기술 스택
 
